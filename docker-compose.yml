@@ -1,0 +1,19 @@
+services:
+ db:
+  image: mysql:8.4
+  container_name: sistemabiblioteca-db
+  restart: unless-stopped
+  environment:
+   MYSQL_DATABASE: biblioteca
+   MYSQL_USER: ${DB_USER}
+   MYSQL_PASSWORD: ${DB_PASSWORD}
+   MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  ports:
+   - "3307:3306"
+  volumes:
+   - biblioteca_data:/var/lib/mysql
+   - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+   - ./sql/02_datos_demo.sql:/docker-entrypoint-initdb.d/02_datos_demo.sql:ro
+
+volumes:
+ biblioteca_data:
