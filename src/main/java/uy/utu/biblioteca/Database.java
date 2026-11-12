@@ -18,14 +18,13 @@ public class Database {
    );
   }
 
+  if (!url.contains("useUnicode=true")) {
+   url += url.contains("?") ? "&" : "?";
+   url += "useUnicode=true&characterEncoding=UTF-8";
+  }
+
   try {
-   Connection conexion =
-           DriverManager.getConnection(url, user, pass);
-
-   System.out.println("Conexion a MySQL exitosa.");
-
-   return conexion;
-
+   return DriverManager.getConnection(url, user, pass);
   } catch (SQLException e) {
    throw new SQLException(
            "No se pudo conectar con MySQL: " + e.getMessage(), e
