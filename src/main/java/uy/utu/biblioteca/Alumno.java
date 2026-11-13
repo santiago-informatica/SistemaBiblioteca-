@@ -1,6 +1,6 @@
 package uy.utu.biblioteca;
 public class Alumno extends Persona {
- private String grupo;
- public Alumno(int id,String n,String d,String e,String g){super(id,n,d,e);grupo=g;}
- public String getGrupo(){return grupo;}
+ private final String grupo;
+ public Alumno(int id,String nombre,String documento,String email,String grupo){super(id,nombre,documento,email);this.grupo=grupo;}
+ public String getGrupo(){return grupo;} @Override public String getTipo(){return "Alumno";}
 }

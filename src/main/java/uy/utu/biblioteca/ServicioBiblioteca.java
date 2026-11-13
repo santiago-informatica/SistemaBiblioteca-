@@ -1,0 +1,9 @@
+package uy.utu.biblioteca;
+import java.util.*;
+public class ServicioBiblioteca implements BibliotecaService {
+ private final LibroDAO libros=new MySqlLibroDAO();private final AlumnoDAO alumnos=new AlumnoDAO();private final PrestamoDAO prestamos=new PrestamoDAO();
+ public List<Libro> libros(String f)throws Exception{return libros.listar(f);} public List<Alumno> alumnos(String f)throws Exception{return alumnos.listar(f);} public List<Prestamo> prestamos(String f)throws Exception{return prestamos.listar(f);}
+ public void guardarLibro(int id,String titulo,String autor,String isbn,String stock)throws Exception{titulo=Validador.requerido(titulo,"título");autor=Validador.requerido(autor,"autor");isbn=Validador.requerido(isbn,"ISBN");int n;try{n=Integer.parseInt(stock);}catch(Exception e){throw new ValidacionException("El stock debe ser un número entero.");}Validador.stock(n);Libro l=new Libro(id,titulo,autor,isbn,n);if(id==0)libros.crear(l);else libros.actualizar(l);}
+ public void guardarAlumno(int id,String nombre,String doc,String email,String grupo)throws Exception{nombre=Validador.requerido(nombre,"nombre");doc=Validador.requerido(doc,"documento");email=Validador.requerido(email,"email");Validador.email(email);grupo=Validador.requerido(grupo,"grupo");Alumno a=new Alumno(id,nombre,doc,email,grupo);if(id==0)alumnos.crear(a);else alumnos.actualizar(a);}
+ public void eliminarLibro(int id)throws Exception{libros.eliminar(id);}public void eliminarAlumno(int id)throws Exception{alumnos.eliminar(id);}public void crearPrestamo(int a,int l,int u)throws Exception{prestamos.crear(a,l,u);}public void devolver(int id)throws Exception{prestamos.devolver(id);}public void eliminarPrestamo(int id)throws Exception{prestamos.eliminar(id);}public List<String[]> reporte()throws Exception{return prestamos.reportePorLibro();}
+}

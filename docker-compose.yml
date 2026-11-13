@@ -1,19 +1,23 @@
 services:
- db:
-  image: mysql:8.4
-  container_name: sistemabiblioteca-db
-  restart: unless-stopped
-  environment:
-   MYSQL_DATABASE: biblioteca
-   MYSQL_USER: ${DB_USER}
-   MYSQL_PASSWORD: ${DB_PASSWORD}
-   MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  ports:
-   - "3307:3306"
-  volumes:
-   - biblioteca_data:/var/lib/mysql
-   - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
-   - ./sql/02_datos_demo.sql:/docker-entrypoint-initdb.d/02_datos_demo.sql:ro
-
+  db:
+    image: mysql:8.4
+    container_name: sistemabiblioteca-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: biblioteca
+      MYSQL_USER: ${DB_USER:-biblioteca}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-admin}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-admin}
+    ports:
+      - "3307:3306"
+    volumes:
+      - biblioteca_data:/var/lib/mysql
+      - ./sql/01-crear-tablas.sql:/docker-entrypoint-initdb.d/01-crear-tablas.sql:ro
+      - ./sql/02-datos-prueba.sql:/docker-entrypoint-initdb.d/02-datos-prueba.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-padmin"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 volumes:
- biblioteca_data:
+  biblioteca_data:

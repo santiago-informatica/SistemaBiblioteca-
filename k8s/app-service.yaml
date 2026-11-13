@@ -1,0 +1,12 @@
+# Servicio interno de ejemplo para el contenedor; Swing no expone un puerto HTTP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: biblioteca-app
+spec:
+  selector:
+    app: biblioteca-app
+  ports:
+    - name: placeholder
+      port: 8080
+      targetPort: 8080

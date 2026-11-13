@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: biblioteca-mysql
+spec:
+  selector: { app: biblioteca-mysql }
+  ports:
+    - port: 3306
+      targetPort: 3306

@@ -1,0 +1,27 @@
+# Plantilla educativa. La aplicación Swing necesita un servidor gráfico para mostrar UI.
+# El escenario recomendado para escritorio es ejecutar Main localmente y conectarse a Aiven.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: biblioteca-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: biblioteca-app
+  template:
+    metadata:
+      labels:
+        app: biblioteca-app
+    spec:
+      containers:
+        - name: biblioteca
+          image: ghcr.io/CAMBIAR_USUARIO/sistema-biblioteca:2.0.0
+          envFrom:
+            - configMapRef:
+                name: biblioteca-config
+            - secretRef:
+                name: biblioteca-secret
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
